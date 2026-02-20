@@ -1,13 +1,33 @@
-const map = L.map('map').setView([54.38, 18.58], 12);
+// Map initialization
+let view = { lat: 54.38, lng: 18.58, zoom: 12 }
+
+const savedView = localStorage.getItem('mapView');
+if (savedView) {
+    view = JSON.parse(savedView);
+}
+
+const map = L.map('map').setView([view.lat, view.lng], view.zoom);
 
 L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
     attribution: 'OpenStreetMap'
 }).addTo(map);
 
+// Map events
+
 map.on('click', function(e) {
     document.getElementById('stream-lat').value = e.latlng.lat.toFixed(6);
     document.getElementById('stream-lng').value = e.latlng.lng.toFixed(6);
 });
+
+map.on('moveend', function() {
+    const currentCenter = map.getCenter();
+    const currentZoom = map.getZoom();
+    
+    const viewState = { lat: currentCenter.lat, lng: currentCenter.lng, zoom: currentZoom };
+    localStorage.setItem('mapView', JSON.stringify(viewState));
+});
+
+// Streams and points handlers
 
 let streamsData = [];
 const markersMap = {};
