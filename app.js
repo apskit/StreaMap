@@ -110,6 +110,21 @@ function addNewPoint() {
         return;
     }
 
+    try {
+        const parsedUrl = new URL(url)
+        const filePath = parsedUrl.pathname.toLowerCase();
+
+        const allowedExtensions = ['.m3u8'];
+        
+        if (!allowedExtensions.some(ext => filePath.endsWith(ext))) {
+            alert("Url adress ends with unsupported extension");
+            return;
+        }
+    } catch (error) {
+        alert("URL adress is invalid");
+        return;
+    }
+
     const newStream = {
         id: id,
         name: name,

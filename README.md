@@ -19,7 +19,7 @@ Application allows users to associate live cameras with their real-life coordina
 1. Add a Stream
 	- Enter custom marker name
 	- Click anywhere on the map to auto-fill the Latitude and Longitude fields
-	- Provide HLS stream URL (with `.m3u8` extension)
+	- Provide HLS stream URL with file ending (`.m3u8` extension)
 2. View stream - click on any marker to open the video player pop-up
 3. Delete a stream - click the "Delete" button in the opened stream pop-up
 
