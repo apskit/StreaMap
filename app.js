@@ -30,7 +30,7 @@ map.on('moveend', function() {
 // Streams and points handlers
 
 let streamsData = [];
-const markersMap = {};
+let markersMap = {};
 let currentHls = null;
 
 function saveToStorage() {
@@ -39,7 +39,7 @@ function saveToStorage() {
 }
 
 function loadFromStorage() {
-    savedStreams = localStorage.getItem('savedStreams');
+    const savedStreams = localStorage.getItem('savedStreams');
 
     if (savedStreams) {
         streamsData = JSON.parse(savedStreams);
@@ -57,7 +57,7 @@ function createCameraMarker(streamData) {
             <h3>${streamData.name}</h3>
             <video id="${streamData.id}" muted autoplay playsinline></video>
             <div class="popup-controls">
-                <button onclick="removeCamera('${streamData.id}')"">remove</button>
+                <button onclick="removeCamera('${streamData.id}')">Remove</button>
             </div>
         </div>
     `;
@@ -95,7 +95,12 @@ function createCameraMarker(streamData) {
 const form = document.getElementById('add-stream-form');
 form.addEventListener('submit', addNewPoint);
 
-function addNewPoint() {
+document.getElementById('import').addEventListener('click', selectFileToImport);
+document.getElementById('import-file').addEventListener('change', importMarkers);
+document.getElementById('export').addEventListener('click', exportMarkers);
+document.getElementById('clear').addEventListener('click', removeAllMarkers);
+
+function addNewPoint(event) {
 
     event.preventDefault();
 
@@ -128,8 +133,8 @@ function addNewPoint() {
     const newStream = {
         id: id,
         name: name,
-        latitude: parseFloat(latitude),
-        longitude: parseFloat(longitude),
+        latitude: latitude,
+        longitude: longitude,
         url: url
     };
 
@@ -151,6 +156,62 @@ function removeCamera(idToRemove) {
         map.removeLayer(markerToRemove);
         delete markersMap[idToRemove];
     }
+}
+
+function removeAllMarkers() {
+    Object.values(markersMap).forEach(marker => map.removeLayer(marker));
+    streamsData = [];
+    markersMap = {};
+    saveToStorage();
+}
+
+function exportMarkers() {
+    let streamsToExport = JSON.stringify(streamsData, null, 1);
+    const blob = new Blob([streamsToExport], { type: "application/json" });
+    const downloadUrl = URL.createObjectURL(blob);
+
+    const a = document.createElement('a');
+    a.href = downloadUrl;
+    a.download = "streaMapMarkers.json";
+    a.click();
+    URL.revokeObjectURL(downloadUrl);
+}
+
+function selectFileToImport() {
+    document.getElementById('import-file').click();
+}
+
+function importMarkers() {
+    const fileInput = document.getElementById('import-file');
+    const file = fileInput.files[0];
+
+    if (file) {
+        const reader = new FileReader();
+
+        reader.onload = function(event) {
+            const fileContent = event.target.result;
+
+            try {
+                const importedStreams = JSON.parse(fileContent);
+
+                importedStreams.forEach((importedStream) => {
+                    if(!streamsData.some(stream => stream.url === importedStream.url)) {
+                        streamsData.push(importedStream);
+                        createCameraMarker(importedStream);
+                    }
+                });
+
+                saveToStorage();
+
+            } catch(error) {
+                alert("Import error: Selected file is invalid");
+            }
+        };
+
+        reader.readAsText(file);        
+    }
+
+    fileInput.value = '';
 }
 
 loadFromStorage();

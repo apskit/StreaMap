@@ -25,7 +25,7 @@ video {
     border-radius: 4px;
 }
 
-#add-stream-form {
+#control-panel {
     position: absolute;
     top: 20px;
     right: 20px;
@@ -37,19 +37,21 @@ video {
     width: 300px;
 }
 
-#add-stream-form h3 {
+#control-panel h3 {
     margin-top: 0;
 }
 
 .form-group {
     margin-bottom: 10px;
 }
+
 .form-group label {
     display: block;
     font-size: 0.8rem;
     margin-bottom: 3px;
     font-weight: bold;
 }
+
 .form-group input {
     width: 100%;
     padding: 8px;
@@ -71,4 +73,16 @@ button {
 
 button:hover {
     background-color: #218838;
+}
+
+.management-group button {
+    width: auto;
+    padding-left: 0px;
+    background-color: transparent;
+    color: grey;
+    padding-bottom: 20px;
+}
+
+.management-group button:hover {
+    text-decoration: underline;
 }
