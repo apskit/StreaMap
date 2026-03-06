@@ -1,0 +1,23 @@
+[
+ {
+  "id": "1772049807943",
+  "name": "Airport Terminal",
+  "latitude": 54.382182,
+  "longitude": 18.465228,
+  "url": "https://5d02106fd8d89.streamlock.net:4444/EPGD/przyloty_t2.stream/playlist.m3u8"
+ },
+ {
+  "id": "1772049855090",
+  "name": "Airport Approach",
+  "latitude": 54.370084,
+  "longitude": 18.497994,
+  "url": "https://5d02106fd8d89.streamlock.net:4444/EPGD/app29.stream/playlist.m3u8"
+ },
+ {
+  "id": "1772049913331",
+  "name": "Airport Apron",
+  "latitude": 54.380945,
+  "longitude": 18.467352,
+  "url": "https://5d02106fd8d89.streamlock.net:4444/EPGD/pps3.stream/playlist.m3u8"
+ }
+]
